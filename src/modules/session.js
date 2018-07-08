@@ -4,6 +4,10 @@ export const LOGIN_REQUESTED = 'session/LOGIN_REQUESTED'
 export const LOGIN_SUCCESS = 'session/LOGIN_SUCCESS'
 export const LOGIN_FAILED = 'session/LOGIN_FAILED'
 export const LOG_OUT = 'session/LOGOUT'
+export const REGISTER_REQUEST = 'session/REGISTER_REQUEST'
+export const REGISTER_SUCCESS = 'session/REGISTER_SUCCESS'
+export const REGISTER_FAILED = 'session/REGISTER_FAILED'
+
 
 const initialState = {
     isLoggedIn: false,
@@ -11,7 +15,10 @@ const initialState = {
     loginFailed: false,
     token: null,
     userId: null,
-    userName: null
+    userName: null,
+    isRegistering: false,
+    isRegistered: false,
+    registerFailed: false
 }
 
 export default (state = initialState, action) => {
@@ -47,6 +54,25 @@ export default (state = initialState, action) => {
                 token: null,
                 userId: null,
                 userName: null
+            }
+        case REGISTER_REQUEST:
+            return {
+                ...state,
+                isRegistering: true,
+                registerFailed: false,
+                isRegistered: false
+            }
+        case REGISTER_SUCCESS:
+            return {
+                ...state,
+                isRegistering: false,
+                isRegistered: true,
+            }
+        case REGISTER_FAILED:
+            return {
+                ...state,
+                isRegistering: false,
+                registerFailed: true
             }
 
         default:
@@ -113,6 +139,28 @@ export const logOut = () => {
         API.setToken(null)
         dispatch({
             type: LOG_OUT
+        })
+    }
+}
+
+export const registerRequest = ({ username, password, firstname, lastname}) => {
+    return dispatch => {
+        API.post('/users/register', {
+            username,
+            password,
+            firstname,
+            lastname
+        })
+        .then(res => {
+            dispatch({
+                type: REGISTER_SUCCESS
+            })
+        })
+        .catch(err => {
+            console.log(err)
+            dispatch({
+                type: REGISTER_FAILED
+            })
         })
     }
 }

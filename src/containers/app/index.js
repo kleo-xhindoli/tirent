@@ -7,7 +7,7 @@ import Home from '../home'
 import About from '../about'
 import Login from '../login'
 import NavBar from '../../presentation/NavBar.jsx'
-// import Register from '../register'
+import Register from '../register'
 
 const ProtectedRoute = (props) => {
     const { component: Component, ...otherProps } = props
@@ -41,7 +41,7 @@ class App extends React.Component {
                     <Route exact path="/" component={Home} />
                     <ProtectedRoute exact path="/about-us" component={About} isLoggedIn={this.props.isLoggedIn}/>
                     <Route exact path="/login" component={Login} />
-                    {/* <Route exact path="/register" component={Register} /> */}
+                    <Route exact path="/register" component={Register} />
                 </main>
             </div>
         )
