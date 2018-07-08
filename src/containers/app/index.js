@@ -1,18 +1,61 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom'
+import { Route, Redirect, withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { getFromLocalStorage, logOut } from '../../modules/session'
 import Home from '../home'
 import About from '../about'
+import Login from '../login'
+import NavBar from '../../presentation/NavBar.jsx'
+// import Register from '../register'
 
-export default () => (
-    <div>
-        <header>
-            <Link to="/">Home</Link>
-            <Link to="/about-us">About</Link>
-        </header>
+const ProtectedRoute = (props) => {
+    const { component: Component, ...otherProps } = props
+    return (
+        <Route
+            {...otherProps}
+            render={renderProps => (
+                props.isLoggedIn ?
+                    <Component {...renderProps} /> :
+                    <Redirect to='/login' />
+                )
+            }
+        />
+    )
+}
 
-        <main>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/about-us" component={About} />
-        </main>
-    </div>
-)
+
+class App extends React.Component {
+
+    componentDidMount () {
+        if (!this.props.isLoggedIn) {
+            this.props.getFromLocalStorage()
+        }
+    }
+
+    render () {
+        return (
+            <div>
+                <NavBar isLoggedIn={this.props.isLoggedIn} logOut={this.props.logOut} />
+                <main>
+                    <Route exact path="/" component={Home} />
+                    <ProtectedRoute exact path="/about-us" component={About} isLoggedIn={this.props.isLoggedIn}/>
+                    <Route exact path="/login" component={Login} />
+                    {/* <Route exact path="/register" component={Register} /> */}
+                </main>
+            </div>
+        )
+    }
+}
+
+const mapStateToProps = state => ({
+    isLoggedIn: state.session.isLoggedIn
+})
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+    getFromLocalStorage,
+    logOut
+}, dispatch)
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))
+
