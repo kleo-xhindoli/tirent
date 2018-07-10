@@ -2,43 +2,59 @@ import React from 'react'
 import { push } from 'react-router-redux'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import {
-    increment,
-    incrementAsync,
-    decrement,
-    decrementAsync
-} from '../../modules/counter'
+import { Dimmer, Loader, Card, Image, Icon } from 'semantic-ui-react'
+import { fetchHouses } from '../../modules/houses'
 
-const Home = props => (
-    <div>
-        <h1>Home</h1>
-        <p>Count: {props.count}</p>
+class Home extends React.Component {
+    componentDidMount () {
+        this.props.fetchHouses()
+    }
 
-        <p>
-            <button onClick={props.increment} disabled={props.isIncrementing}>Increment</button>
-            <button onClick={props.incrementAsync} disabled={props.isIncrementing}>Increment Async</button>
-        </p>
+    loadPlaceholders (count) {
+        return <div>yes</div>
+    }
 
-        <p>
-            <button onClick={props.decrement} disabled={props.isDecrementing}>Decrementing</button>
-            <button onClick={props.decrementAsync} disabled={props.isDecrementing}>Decrement Async</button>
-        </p>
-
-        <p><button onClick={() => props.changePage()}>Go to about page via redux</button></p>
-    </div>
-)
+    renderHouses (items) {
+        if (!items.length) return this.loadPlaceholders(5)
+        return items.map(item => (
+            <Card>
+                <Image src={item.gallery[0].url} />
+                <Card.Content>
+                    <Card.Header>{item.title}</Card.Header>
+                    <Card.Meta>
+                        <span>{item.createdAt}</span>
+                    </Card.Meta>
+                    <Card.Description>{item.description}</Card.Description>
+                </Card.Content>
+                <Card.Content extra>
+                <a>
+                    <Icon name='user' />
+                    {item.createdBy.firstname + ' ' + item.createdBy.lastname}
+                </a>
+                </Card.Content>
+            </Card>
+        ))
+    }
+    
+    render () {
+        const { isFetching, items } = this.props.houses
+        return (
+            <Dimmer.Dimmable blurring dimmed={isFetching}>
+                {this.renderHouses(items)}
+                <Dimmer inverted active={isFetching}>
+                    <Loader>Loading</Loader>
+                </Dimmer>
+            </Dimmer.Dimmable>
+        )
+    }
+}
 
 const mapStateToProps = state => ({
-    count: state.counter.count,
-    isIncrementing: state.counter.isIncrementing,
-    isDecrementing: state.counter.isDecrementing
+    houses: state.houses,
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    increment,
-    incrementAsync,
-    decrement,
-    decrementAsync,
+    fetchHouses,
     changePage: () => push('/about-us')
 }, dispatch)
 
