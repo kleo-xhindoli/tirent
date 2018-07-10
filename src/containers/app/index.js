@@ -35,11 +35,16 @@ class App extends React.Component {
 
     render () {
         return (
-            <div>
-                <NavBar isLoggedIn={this.props.isLoggedIn} logOut={this.props.logOut} />
+            <div className="app-wrapper">
+                <NavBar isLoggedIn={this.props.isLoggedIn} logOut={this.props.logOut} location={this.props.location}/>
                 <main>
                     <Route exact path="/" component={Home} />
-                    <ProtectedRoute exact path="/about-us" component={About} isLoggedIn={this.props.isLoggedIn}/>
+                    <ProtectedRoute 
+                        exact 
+                        path="/about-us"
+                        component={About}
+                        isLoggedIn={this.props.isLoggedIn}
+                    />
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/register" component={Register} />
                 </main>

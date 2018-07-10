@@ -1,8 +1,9 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { loginRequest } from '../../modules/session'
 import { push } from 'react-router-redux'
+import { Button, Form, Message, Card, Input } from 'semantic-ui-react'
+import { loginRequest } from '../../modules/session'
 
 class Login extends React.Component {
     constructor (props) {
@@ -31,16 +32,31 @@ class Login extends React.Component {
 
     render () {
         return (
-            <div>
-                <h1>Login</h1>
-                <input type="text" placeholder="Username" onChange={(evt) => this.setState({username: evt.target.value})}/><br/>
-                <input type="password" placeholder="Password" onChange={(evt) => this.setState({password: evt.target.value})}/><br/>
-                {this.props.loginFailed ? <div>Your username or password is incorrect.</div> : null}
-                <input 
-                    type="submit"
-                    onClick={this.submit.bind(this)}
-                    disabled={this.props.isLoggingIn}
-                />
+            <div className="login-form">
+                <h1>Sign in</h1>
+                <Card>
+                    <Card.Content>
+                        <Form error={this.props.loginFailed}>
+                            <Form.Field>
+                                <Input icon='user' iconPosition='left' placeholder='Username' onChange={(evt) => this.setState({ username: evt.target.value })} />
+                            </Form.Field>
+                            <Form.Field>
+                                <Input icon='lock' iconPosition='left' type="password" placeholder='Password' onChange={(evt) => this.setState({ password: evt.target.value })} />
+                            </Form.Field>
+                            <Message
+                                error
+                                content='Your username or password is incorrect.'
+                            />
+                            <Button
+                                primary
+                                fluid
+                                type='submit'
+                                onClick={this.submit.bind(this)}
+                                disabled={this.props.isLoggingIn}
+                            >Sign In</Button>
+                        </Form>
+                    </Card.Content>
+                </Card>
             </div>
         )
     }
