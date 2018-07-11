@@ -46,9 +46,9 @@ class Login extends React.Component {
             <div className="login-form">
                 <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
                     <Grid.Column style={{ maxWidth: 450 }}>
-                    <Header as='h2' color="blue" textAlign='center'>
-                        <Image src='/icon.png' /> Log-in to your account
-                    </Header>
+                        <Header as='h2' color="blue" textAlign='center'>
+                            <Image src='/icon.png' /> Log-in to your account
+                        </Header>
                         <Segment stacked>
                             <Form error={this.props.loginFailed} size='large'>
                                 <Form.Field>
