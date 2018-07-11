@@ -2,7 +2,18 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
-import { Button, Form, Message, Card, Input } from 'semantic-ui-react'
+import { NavLink } from 'react-router-dom'
+import { 
+    Button,
+    Form,
+    Message,
+    Card,
+    Input,
+    Grid,
+    Header,
+    Image,
+    Segment
+} from 'semantic-ui-react'
 import { loginRequest } from '../../modules/session'
 
 class Login extends React.Component {
@@ -33,30 +44,37 @@ class Login extends React.Component {
     render () {
         return (
             <div className="login-form">
-                <h1>Sign in</h1>
-                <Card>
-                    <Card.Content>
-                        <Form error={this.props.loginFailed}>
-                            <Form.Field>
-                                <Input icon='user' iconPosition='left' placeholder='Username' onChange={(evt) => this.setState({ username: evt.target.value })} />
-                            </Form.Field>
-                            <Form.Field>
-                                <Input icon='lock' iconPosition='left' type="password" placeholder='Password' onChange={(evt) => this.setState({ password: evt.target.value })} />
-                            </Form.Field>
-                            <Message
-                                error
-                                content='Your username or password is incorrect.'
-                            />
-                            <Button
-                                primary
-                                fluid
-                                type='submit'
-                                onClick={this.submit.bind(this)}
-                                disabled={this.props.isLoggingIn}
-                            >Sign In</Button>
-                        </Form>
-                    </Card.Content>
-                </Card>
+                <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
+                    <Grid.Column style={{ maxWidth: 450 }}>
+                    <Header as='h2' color="blue" textAlign='center'>
+                        <Image src='/icon.png' /> Log-in to your account
+                    </Header>
+                        <Segment stacked>
+                            <Form error={this.props.loginFailed} size='large'>
+                                <Form.Field>
+                                    <Input fluid icon='user' iconPosition='left' placeholder='Username' onChange={(evt) => this.setState({ username: evt.target.value })} />
+                                </Form.Field>
+                                <Form.Field>
+                                    <Input fluid icon='lock' iconPosition='left' type="password" placeholder='Password' onChange={(evt) => this.setState({ password: evt.target.value })} />
+                                </Form.Field>
+                                <Message
+                                    error
+                                    content='Your username or password is incorrect.'
+                                />
+                                <Button
+                                    primary
+                                    fluid
+                                    type='submit'
+                                    onClick={this.submit.bind(this)}
+                                    disabled={this.props.isLoggingIn}
+                                >Sign In</Button>
+                            </Form>
+                        </Segment>
+                        <Message>
+                            New to us? <NavLink to='/register'>Sign Up</NavLink>
+                        </Message>
+                    </Grid.Column>
+                </Grid>
             </div>
         )
     }
@@ -71,7 +89,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     loginRequest,
-    redirect: () => push('/')
+    redirect: () => push('/register')
 }, dispatch)
 
 export default connect(

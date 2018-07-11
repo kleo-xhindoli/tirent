@@ -2,7 +2,18 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
-import { Button, Form, Message, Card, Input } from 'semantic-ui-react'
+import { NavLink } from 'react-router-dom'
+import { 
+    Button,
+    Form,
+    Message,
+    Card,
+    Input,
+    Grid,
+    Header,
+    Image,
+    Segment
+} from 'semantic-ui-react'
 import { registerRequest } from '../../modules/session'
 
 class Register extends React.Component {
@@ -64,39 +75,46 @@ class Register extends React.Component {
     render () {
         return (
             <div className="login-form">
-                <h1>Sign Up</h1>
-                <Card>
-                    <Card.Content>
-                        <Form error={this.state.hasError}>
-                            <Form.Field>
-                                <Input icon='user' iconPosition='left' placeholder='Username' onChange={(evt) => this.setState({ username: evt.target.value })} />
-                            </Form.Field>
-                            <Form.Field>
-                                <Input icon='lock' iconPosition='left' type="password" placeholder='Password' onChange={(evt) => this.setState({ password: evt.target.value })} />
-                            </Form.Field>
-                            <Form.Field>
-                                <Input icon='lock' iconPosition='left' type="password" placeholder='Confirm Password' onChange={(evt) => this.setState({ confirm: evt.target.value })} />
-                            </Form.Field>
-                            <Form.Field>
-                                <Input icon='user' iconPosition='left' placeholder='First Name' onChange={(evt) => this.setState({ firstname: evt.target.value })} />
-                            </Form.Field>
-                            <Form.Field>
-                                <Input icon='user' iconPosition='left' placeholder='Last Name' onChange={(evt) => this.setState({ lastname: evt.target.value })} />
-                            </Form.Field>
-                            <Message
-                                error
-                                content={this.state.errorMessage}
-                            />
-                            <Button
-                                primary
-                                fluid
-                                type='submit'
-                                onClick={this.submit.bind(this)}
-                                disabled={this.props.isRegistering}
-                            >Sign Up</Button>
-                        </Form>
-                    </Card.Content>
-                </Card>
+                <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
+                    <Grid.Column style={{ maxWidth: 450 }}>
+                        <Header as='h2' color="blue" textAlign='center'>
+                            <Image src='/icon.png' /> Create a new account
+                        </Header>
+                        <Segment stacked>
+                            <Form error={this.state.hasError}>
+                                <Form.Field>
+                                    <Input icon='user' iconPosition='left' placeholder='Username' onChange={(evt) => this.setState({ username: evt.target.value })} />
+                                </Form.Field>
+                                <Form.Field>
+                                    <Input icon='lock' iconPosition='left' type="password" placeholder='Password' onChange={(evt) => this.setState({ password: evt.target.value })} />
+                                </Form.Field>
+                                <Form.Field>
+                                    <Input icon='lock' iconPosition='left' type="password" placeholder='Confirm Password' onChange={(evt) => this.setState({ confirm: evt.target.value })} />
+                                </Form.Field>
+                                <Form.Field>
+                                    <Input icon='address card outline' iconPosition='left' placeholder='First Name' onChange={(evt) => this.setState({ firstname: evt.target.value })} />
+                                </Form.Field>
+                                <Form.Field>
+                                    <Input icon='address card outline' iconPosition='left' placeholder='Last Name' onChange={(evt) => this.setState({ lastname: evt.target.value })} />
+                                </Form.Field>
+                                <Message
+                                    error
+                                    content={this.state.errorMessage}
+                                />
+                                <Button
+                                    primary
+                                    fluid
+                                    type='submit'
+                                    onClick={this.submit.bind(this)}
+                                    disabled={this.props.isRegistering}
+                                >Sign Up</Button>
+                            </Form>
+                        </Segment>
+                        <Message>
+                            Already have an account? <NavLink to='/login'>Sign In</NavLink>
+                        </Message>
+                    </Grid.Column>
+                </Grid>
             </div>
         )
     }
